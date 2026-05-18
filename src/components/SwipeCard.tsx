@@ -4,6 +4,7 @@ import { motion, useMotionValue, useTransform, AnimatePresence } from "framer-mo
 import Image from "next/image";
 import { MapPin, Gamepad2, Star } from "lucide-react";
 import { getAvatarUrl } from "@/lib/utils";
+import { INTERESTS } from "@/lib/interests";
 import type { Profile } from "@/types";
 
 interface SwipeCardProps {
@@ -133,6 +134,24 @@ export function SwipeCard({ profile, onLike, onPass, isFront, stackIndex }: Swip
             <div className="flex items-center gap-2">
               <Gamepad2 size={14} className="text-[#7c3aed]" />
               <span className="text-xs text-[#64748b]">{profile.platforms.join(" · ")}</span>
+            </div>
+          )}
+
+          {/* Interests */}
+          {profile.interests && profile.interests.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {profile.interests.slice(0, 5).map((id) => {
+                const interest = INTERESTS.find((i) => i.id === id);
+                if (!interest) return null;
+                return (
+                  <span
+                    key={id}
+                    className="flex items-center gap-1 bg-[#7c3aed15] border border-[#7c3aed30] rounded-full px-2.5 py-1 text-[10px] text-[#a78bfa]"
+                  >
+                    {interest.icon} {interest.label}
+                  </span>
+                );
+              })}
             </div>
           )}
         </div>

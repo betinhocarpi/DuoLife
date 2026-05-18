@@ -15,7 +15,7 @@ const DEMO_PROFILES: Profile[] = [
     avatar_url: null, photos: [], location: "São Paulo",
     platforms: ["PC"], play_style: "Competitivo", gender: "Mulher",
     looking_for: ["Duo de game", "Relacionamento"], rank: "Diamond II", discord: "kami#1234",
-    is_premium: true, created_at: "", updated_at: "",
+    is_premium: true, interests: ["anime", "esports", "streaming"], created_at: "", updated_at: "",
     games: [
       { id: "lol", name: "League of Legends", category: "MOBA", icon: "⚔️" },
       { id: "valorant", name: "Valorant", category: "FPS", icon: "🔫" },
@@ -27,7 +27,7 @@ const DEMO_PROFILES: Profile[] = [
     avatar_url: null, photos: [], location: "Rio de Janeiro",
     platforms: ["PC", "PS5"], play_style: "Ambos", gender: "Homem",
     looking_for: ["Duo de game", "Amizade", "Qualquer coisa"], rank: "Platinum", discord: "novax#5678",
-    is_premium: false, created_at: "", updated_at: "",
+    is_premium: false, interests: ["streaming", "musica", "filmes"], created_at: "", updated_at: "",
     games: [
       { id: "apex", name: "Apex Legends", category: "Battle Royale", icon: "🎯" },
       { id: "fortnite", name: "Fortnite", category: "Battle Royale", icon: "🏗️" },
@@ -40,7 +40,7 @@ const DEMO_PROFILES: Profile[] = [
     avatar_url: null, photos: [], location: "Curitiba",
     platforms: ["PC", "Switch"], play_style: "Casual", gender: "Não-binário",
     looking_for: ["Amizade", "Relacionamento"], rank: null, discord: "yuki#9012",
-    is_premium: false, created_at: "", updated_at: "",
+    is_premium: false, interests: ["anime", "manga", "leitura", "natureza"], created_at: "", updated_at: "",
     games: [
       { id: "ffxiv", name: "Final Fantasy XIV", category: "MMO", icon: "🌟" },
       { id: "stardew", name: "Stardew Valley", category: "Simulation", icon: "🌾" },
@@ -52,7 +52,7 @@ const DEMO_PROFILES: Profile[] = [
     avatar_url: null, photos: [], location: "Belo Horizonte",
     platforms: ["PC"], play_style: "Competitivo", gender: "Homem",
     looking_for: ["Duo de game"], rank: "FACEIT 10", discord: "darkbyte#3456",
-    is_premium: true, created_at: "", updated_at: "",
+    is_premium: true, interests: ["esports", "tecnologia", "podcast"], created_at: "", updated_at: "",
     games: [
       { id: "cs2", name: "CS2", category: "FPS", icon: "💣" },
       { id: "tarkov", name: "Escape from Tarkov", category: "FPS", icon: "🎒" },

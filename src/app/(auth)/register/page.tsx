@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { GameSelector } from "@/components/GameSelector";
+import { InterestSelector } from "@/components/InterestSelector";
 import { Mail, Lock, User, ChevronRight, ChevronLeft } from "lucide-react";
 import type { Game, Platform, PlayStyle, Gender, LookingFor } from "@/types";
 
@@ -31,30 +32,29 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Step 1 data
+  // Step 1
   const [step1Data, setStep1Data] = useState<Step1Data | null>(null);
 
-  // Step 2 data
+  // Step 2
   const [games, setGames] = useState<Game[]>([]);
   const [platforms, setPlatforms] = useState<Platform[]>([]);
   const [playStyle, setPlayStyle] = useState<PlayStyle>("Ambos");
   const [gender, setGender] = useState<Gender>("Prefiro não dizer");
   const [lookingFor, setLookingFor] = useState<LookingFor[]>([]);
+
+  // Step 3
   const [bio, setBio] = useState("");
+  const [interests, setInterests] = useState<string[]>([]);
+  const [discord, setDiscord] = useState("");
 
   const { register, handleSubmit, formState: { errors } } = useForm<Step1Data>({
     resolver: zodResolver(step1Schema),
   });
 
-  const onStep1 = (data: Step1Data) => {
-    setStep1Data(data);
-    setStep(2);
-  };
+  const onStep1 = (data: Step1Data) => { setStep1Data(data); setStep(2); };
 
   const togglePlatform = (p: Platform) => {
-    setPlatforms((prev) =>
-      prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]
-    );
+    setPlatforms((prev) => prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]);
   };
 
   const onFinish = async () => {
@@ -84,6 +84,8 @@ export default function RegisterPage() {
       play_style: playStyle,
       gender,
       looking_for: lookingFor,
+      interests,
+      discord: discord || null,
     });
 
     if (profileErr) {
@@ -99,22 +101,21 @@ export default function RegisterPage() {
     <div className="flex flex-col gap-6">
       {/* Progress */}
       <div className="flex gap-2">
-        {[1, 2].map((s) => (
+        {[1, 2, 3].map((s) => (
           <div
             key={s}
-            className={`h-1 flex-1 rounded-full transition-all ${
-              s <= step ? "bg-[#7c3aed]" : "bg-[#2a2a3e]"
-            }`}
+            className={`h-1 flex-1 rounded-full transition-all ${s <= step ? "bg-[#7c3aed]" : "bg-[#2a2a3e]"}`}
           />
         ))}
       </div>
 
+      {/* Step 1 — Dados básicos */}
       {step === 1 && (
         <div className="flex flex-col gap-6">
           <div className="text-center">
             <div className="text-4xl mb-2">👾</div>
             <h1 className="text-2xl font-black text-[#e2e8f0]">Criar conta</h1>
-            <p className="text-[#64748b] text-sm">Passo 1 de 2 · Dados básicos</p>
+            <p className="text-[#64748b] text-sm">Passo 1 de 3 · Dados básicos</p>
           </div>
 
           <form onSubmit={handleSubmit(onStep1)} className="flex flex-col gap-4">
@@ -162,6 +163,7 @@ export default function RegisterPage() {
         </div>
       )}
 
+      {/* Step 2 — Perfil Gamer */}
       {step === 2 && (
         <div className="flex flex-col gap-5">
           <div className="flex items-center gap-3">
@@ -170,22 +172,8 @@ export default function RegisterPage() {
             </button>
             <div>
               <h1 className="text-xl font-black text-[#e2e8f0]">Perfil Gamer</h1>
-              <p className="text-[#64748b] text-xs">Passo 2 de 2 · Seu estilo</p>
+              <p className="text-[#64748b] text-xs">Passo 2 de 3 · Seu estilo gamer</p>
             </div>
-          </div>
-
-          {/* Bio */}
-          <div className="flex flex-col gap-1.5">
-            <label className="text-sm font-medium text-[#94a3b8]">Bio</label>
-            <textarea
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              placeholder="Fale sobre você, seu setup, como costuma jogar..."
-              rows={3}
-              maxLength={300}
-              className="w-full bg-[#16162a] border border-[#2a2a3e] rounded-xl px-4 py-3 text-[#e2e8f0] placeholder:text-[#475569] focus:outline-none focus:border-[#7c3aed] resize-none text-sm"
-            />
-            <p className="text-[10px] text-[#475569] text-right">{bio.length}/300</p>
           </div>
 
           {/* Platforms */}
@@ -272,6 +260,57 @@ export default function RegisterPage() {
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-[#94a3b8]">Jogos que você joga</label>
             <GameSelector selected={games} onChange={setGames} />
+          </div>
+
+          <Button onClick={() => setStep(3)} size="lg" className="w-full gap-2">
+            Próximo <ChevronRight size={18} />
+          </Button>
+        </div>
+      )}
+
+      {/* Step 3 — Sobre você */}
+      {step === 3 && (
+        <div className="flex flex-col gap-5">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setStep(2)} className="text-[#64748b] hover:text-[#e2e8f0]">
+              <ChevronLeft size={20} />
+            </button>
+            <div>
+              <h1 className="text-xl font-black text-[#e2e8f0]">Sobre você</h1>
+              <p className="text-[#64748b] text-xs">Passo 3 de 3 · Interesses e bio</p>
+            </div>
+          </div>
+
+          {/* Bio */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-[#94a3b8]">Bio</label>
+            <textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              placeholder="Fale sobre você, seu setup, como costuma jogar..."
+              rows={3}
+              maxLength={300}
+              className="w-full bg-[#16162a] border border-[#2a2a3e] rounded-xl px-4 py-3 text-[#e2e8f0] placeholder:text-[#475569] focus:outline-none focus:border-[#7c3aed] resize-none text-sm"
+            />
+            <p className="text-[10px] text-[#475569] text-right">{bio.length}/300</p>
+          </div>
+
+          {/* Discord */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-[#94a3b8]">Discord <span className="text-[#475569] font-normal">(opcional)</span></label>
+            <Input
+              placeholder="seuuser#0000 ou seuuser"
+              value={discord}
+              onChange={(e) => setDiscord(e.target.value)}
+            />
+          </div>
+
+          {/* Interests */}
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-[#94a3b8]">
+              Interesses <span className="text-[#475569] font-normal">(até 10)</span>
+            </label>
+            <InterestSelector selected={interests} onChange={setInterests} />
           </div>
 
           {error && (

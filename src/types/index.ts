@@ -28,6 +28,7 @@ export interface Profile {
   looking_for: LookingFor[];
   rank: string | null;
   discord: string | null;
+  interests: string[];
   is_premium: boolean;
   created_at: string;
   updated_at: string;
