@@ -14,7 +14,7 @@ const DEMO_PROFILES: Profile[] = [
     bio: "Suporte main, amo jogar com pessoas que comunicam bem. Bora rankar?",
     avatar_url: null, photos: [], location: "São Paulo",
     platforms: ["PC"], play_style: "Competitivo", gender: "Mulher",
-    looking_for: "Duo de game", rank: "Diamond II", discord: "kami#1234",
+    looking_for: ["Duo de game", "Relacionamento"], rank: "Diamond II", discord: "kami#1234",
     is_premium: true, created_at: "", updated_at: "",
     games: [
       { id: "lol", name: "League of Legends", category: "MOBA", icon: "⚔️" },
@@ -26,7 +26,7 @@ const DEMO_PROFILES: Profile[] = [
     bio: "Streamer casual, jogo tudo. Adoro conhecer novas pessoas pelo game.",
     avatar_url: null, photos: [], location: "Rio de Janeiro",
     platforms: ["PC", "PS5"], play_style: "Ambos", gender: "Homem",
-    looking_for: "Qualquer coisa", rank: "Platinum", discord: "novax#5678",
+    looking_for: ["Duo de game", "Amizade", "Qualquer coisa"], rank: "Platinum", discord: "novax#5678",
     is_premium: false, created_at: "", updated_at: "",
     games: [
       { id: "apex", name: "Apex Legends", category: "Battle Royale", icon: "🎯" },
@@ -39,7 +39,7 @@ const DEMO_PROFILES: Profile[] = [
     bio: "Healer main em FFXIV. Casual gamer em busca de aventuras.",
     avatar_url: null, photos: [], location: "Curitiba",
     platforms: ["PC", "Switch"], play_style: "Casual", gender: "Não-binário",
-    looking_for: "Amizade", rank: null, discord: "yuki#9012",
+    looking_for: ["Amizade", "Relacionamento"], rank: null, discord: "yuki#9012",
     is_premium: false, created_at: "", updated_at: "",
     games: [
       { id: "ffxiv", name: "Final Fantasy XIV", category: "MMO", icon: "🌟" },
@@ -51,7 +51,7 @@ const DEMO_PROFILES: Profile[] = [
     bio: "CS2 faceit 10. Jogo sério mas sem drama. Bora ganhar?",
     avatar_url: null, photos: [], location: "Belo Horizonte",
     platforms: ["PC"], play_style: "Competitivo", gender: "Homem",
-    looking_for: "Duo de game", rank: "FACEIT 10", discord: "darkbyte#3456",
+    looking_for: ["Duo de game"], rank: "FACEIT 10", discord: "darkbyte#3456",
     is_premium: true, created_at: "", updated_at: "",
     games: [
       { id: "cs2", name: "CS2", category: "FPS", icon: "💣" },

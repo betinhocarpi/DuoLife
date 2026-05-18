@@ -39,7 +39,7 @@ export default function RegisterPage() {
   const [platforms, setPlatforms] = useState<Platform[]>([]);
   const [playStyle, setPlayStyle] = useState<PlayStyle>("Ambos");
   const [gender, setGender] = useState<Gender>("Prefiro não dizer");
-  const [lookingFor, setLookingFor] = useState<LookingFor>("Qualquer coisa");
+  const [lookingFor, setLookingFor] = useState<LookingFor[]>([]);
   const [bio, setBio] = useState("");
 
   const { register, handleSubmit, formState: { errors } } = useForm<Step1Data>({
@@ -255,9 +255,9 @@ export default function RegisterPage() {
               {LOOKING_FOR.map((l) => (
                 <button
                   key={l}
-                  onClick={() => setLookingFor(l)}
+                  onClick={() => setLookingFor((prev) => prev.includes(l) ? prev.filter((x) => x !== l) : [...prev, l])}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
-                    lookingFor === l
+                    lookingFor.includes(l)
                       ? "bg-[#f59e0b20] border-[#f59e0b] text-[#fbbf24]"
                       : "bg-[#16162a] border-[#2a2a3e] text-[#64748b]"
                   }`}

@@ -18,7 +18,7 @@ create table if not exists profiles (
   games jsonb default '[]',
   play_style text check (play_style in ('Casual', 'Competitivo', 'Ambos')),
   gender text check (gender in ('Homem', 'Mulher', 'Não-binário', 'Prefiro não dizer')),
-  looking_for text check (looking_for in ('Duo de game', 'Amizade', 'Relacionamento', 'Qualquer coisa')),
+  looking_for text[] default '{}',
   rank text,
   discord text,
   is_premium boolean default false,

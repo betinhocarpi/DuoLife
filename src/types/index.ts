@@ -23,7 +23,7 @@ export interface Profile {
   games: Game[];
   play_style: PlayStyle;
   gender: Gender;
-  looking_for: LookingFor;
+  looking_for: LookingFor[];
   rank: string | null;
   discord: string | null;
   is_premium: boolean;
