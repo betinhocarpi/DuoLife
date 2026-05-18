@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Remove-Item \"D:\\\\CLAUDE\\\\DuoLife\\\\duolife-temp\" -Recurse -Confirm:$false -ErrorAction SilentlyContinue)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp"
+    ]
+  }
+}

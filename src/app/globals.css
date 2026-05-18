@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #090910;
+  --color-surface: #12121f;
+  --color-surface-2: #1a1a2e;
+  --color-border: #2a2a3e;
+  --color-primary: #7c3aed;
+  --color-primary-hover: #6d28d9;
+  --color-primary-glow: #7c3aed40;
+  --color-secondary: #06b6d4;
+  --color-secondary-glow: #06b6d430;
+  --color-accent: #f59e0b;
+  --color-success: #10b981;
+  --color-danger: #ef4444;
+  --color-text: #e2e8f0;
+  --color-muted: #64748b;
+  --color-card: #16162a;
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: #090910;
+  color: #e2e8f0;
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar gamer */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #12121f; }
+::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 2px; }
+
+/* Neon glow utilities */
+.glow-purple { box-shadow: 0 0 20px #7c3aed40, 0 0 40px #7c3aed20; }
+.glow-cyan { box-shadow: 0 0 20px #06b6d440, 0 0 40px #06b6d420; }
+.glow-text-purple { text-shadow: 0 0 20px #7c3aed80; }
+.glow-text-cyan { text-shadow: 0 0 20px #06b6d480; }
+
+/* Gradient backgrounds */
+.bg-gamer { background: linear-gradient(135deg, #090910 0%, #12121f 50%, #090910 100%); }
+.bg-card-gamer { background: linear-gradient(135deg, #16162a 0%, #1a1a2e 100%); }
+.bg-primary-gradient { background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%); }
+
+/* Animations */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 10px #7c3aed40; }
+  50% { box-shadow: 0 0 25px #7c3aed80, 0 0 50px #7c3aed40; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+
+/* Safe area for mobile */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.safe-top { padding-top: env(safe-area-inset-top); }
+
+/* No select on swipe cards */
+.no-select { user-select: none; -webkit-user-select: none; }
+
+/* Hide scrollbar but keep scroll */
+.hide-scrollbar { scrollbar-width: none; }
+.hide-scrollbar::-webkit-scrollbar { display: none; }
