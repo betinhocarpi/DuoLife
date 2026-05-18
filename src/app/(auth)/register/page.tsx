@@ -74,6 +74,19 @@ export default function RegisterPage() {
       return;
     }
 
+    // If no session (email confirmation required), sign in to get it
+    if (!authData.session) {
+      const { error: signInErr } = await supabase.auth.signInWithPassword({
+        email: step1Data.email,
+        password: step1Data.password,
+      });
+      if (signInErr) {
+        setError("Confirme seu email e faça login para completar o cadastro.");
+        setLoading(false);
+        return;
+      }
+    }
+
     const { error: profileErr } = await supabase.from("profiles").insert({
       user_id: authData.user.id,
       name: step1Data.name,
@@ -89,7 +102,7 @@ export default function RegisterPage() {
     });
 
     if (profileErr) {
-      setError("Erro ao criar perfil. Tente novamente.");
+      setError(profileErr.message);
       setLoading(false);
       return;
     }
