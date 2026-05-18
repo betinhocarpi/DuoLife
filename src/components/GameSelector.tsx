@@ -1,9 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
 import { GAMES, GAME_CATEGORIES } from "@/lib/games";
 import type { Game } from "@/types";
 import { cn } from "@/lib/utils";
-import { Search, X } from "lucide-react";
+import { Search, X, Check } from "lucide-react";
+import Image from "next/image";
 
 interface GameSelectorProps {
   selected: Game[];
@@ -14,8 +16,25 @@ interface GameSelectorProps {
 export function GameSelector({ selected, onChange, max = 10 }: GameSelectorProps) {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [games, setGames] = useState<Game[]>(GAMES);
+  const [categories, setCategories] = useState<string[]>(GAME_CATEGORIES);
 
-  const filtered = GAMES.filter((g) => {
+  useEffect(() => {
+    const supabase = createClient();
+    supabase
+      .from("games")
+      .select("id, name, category, icon, cover_url, rank")
+      .eq("is_active", true)
+      .order("rank", { ascending: true })
+      .then(({ data }) => {
+        if (data && data.length > 0) {
+          setGames(data);
+          setCategories([...new Set(data.map((g: Game) => g.category))].sort());
+        }
+      });
+  }, []);
+
+  const filtered = games.filter((g) => {
     const matchSearch = g.name.toLowerCase().includes(search.toLowerCase());
     const matchCategory = activeCategory ? g.category === activeCategory : true;
     return matchSearch && matchCategory;
@@ -52,7 +71,7 @@ export function GameSelector({ selected, onChange, max = 10 }: GameSelectorProps
         >
           Todos
         </button>
-        {GAME_CATEGORIES.map((cat) => (
+        {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setActiveCategory(cat === activeCategory ? null : cat)}
@@ -82,7 +101,7 @@ export function GameSelector({ selected, onChange, max = 10 }: GameSelectorProps
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto hide-scrollbar">
+      <div className="grid grid-cols-2 gap-2 max-h-72 overflow-y-auto hide-scrollbar">
         {filtered.map((game) => {
           const isSelected = selected.some((s) => s.id === game.id);
           const isDisabled = !isSelected && selected.length >= max;
@@ -92,18 +111,46 @@ export function GameSelector({ selected, onChange, max = 10 }: GameSelectorProps
               onClick={() => toggle(game)}
               disabled={isDisabled}
               className={cn(
-                "flex items-center gap-2 p-2.5 rounded-xl border text-left text-xs transition-all",
+                "relative rounded-xl border overflow-hidden text-left transition-all",
                 isSelected
-                  ? "bg-[#7c3aed20] border-[#7c3aed] text-[#a78bfa]"
-                  : "bg-[#16162a] border-[#2a2a3e] text-[#94a3b8] hover:border-[#7c3aed60]",
+                  ? "border-[#7c3aed] ring-1 ring-[#7c3aed]"
+                  : "border-[#2a2a3e] hover:border-[#7c3aed60]",
                 isDisabled && "opacity-40 cursor-not-allowed"
               )}
             >
-              <span className="text-base">{game.icon}</span>
-              <div>
-                <div className="font-medium leading-tight">{game.name}</div>
-                <div className="text-[#475569] text-[10px]">{game.category}</div>
-              </div>
+              {game.cover_url ? (
+                <div className="relative w-full aspect-[16/9]">
+                  <Image
+                    src={game.cover_url}
+                    alt={game.name}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  {isSelected && (
+                    <div className="absolute top-1.5 right-1.5 bg-[#7c3aed] rounded-full p-0.5">
+                      <Check size={10} className="text-white" />
+                    </div>
+                  )}
+                  <div className="absolute bottom-0 left-0 right-0 p-2">
+                    <div className="text-white text-[11px] font-semibold leading-tight truncate">{game.name}</div>
+                    <div className="text-white/50 text-[9px] truncate">{game.category}</div>
+                  </div>
+                </div>
+              ) : (
+                <div className={cn(
+                  "flex items-center gap-2 p-2.5",
+                  isSelected ? "bg-[#7c3aed20]" : "bg-[#16162a]"
+                )}>
+                  <span className="text-base">{game.icon}</span>
+                  <div>
+                    <div className={cn("font-medium leading-tight text-xs", isSelected ? "text-[#a78bfa]" : "text-[#94a3b8]")}>{game.name}</div>
+                    <div className="text-[#475569] text-[10px]">{game.category}</div>
+                  </div>
+                  {isSelected && <Check size={12} className="ml-auto text-[#7c3aed]" />}
+                </div>
+              )}
             </button>
           );
         })}

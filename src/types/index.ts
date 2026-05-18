@@ -8,6 +8,8 @@ export interface Game {
   name: string;
   category: string;
   icon: string;
+  cover_url?: string;
+  rank?: number;
 }
 
 export interface Profile {
