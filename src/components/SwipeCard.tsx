@@ -11,21 +11,38 @@ interface SwipeCardProps {
   profile: Profile;
   onLike: () => void;
   onPass: () => void;
+  onViewProfile: () => void;
   isFront: boolean;
   stackIndex: number;
 }
 
-export function SwipeCard({ profile, onLike, onPass, isFront, stackIndex }: SwipeCardProps) {
+export function SwipeCard({ profile, onLike, onPass, onViewProfile, isFront, stackIndex }: SwipeCardProps) {
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-25, 25]);
   const likeOpacity = useTransform(x, [20, 100], [0, 1]);
   const nopeOpacity = useTransform(x, [-100, -20], [1, 0]);
 
-  const dragStart = useRef({ x: 0 });
+  const dragStart = useRef({ x: 0, y: 0 });
+  const didDrag = useRef(false);
+
+  const handleDragStart = (_: unknown, info: { point: { x: number; y: number } }) => {
+    dragStart.current = { x: info.point.x, y: info.point.y };
+    didDrag.current = false;
+  };
+
+  const handleDrag = (_: unknown, info: { offset: { x: number; y: number } }) => {
+    if (Math.abs(info.offset.x) > 8 || Math.abs(info.offset.y) > 8) {
+      didDrag.current = true;
+    }
+  };
 
   const handleDragEnd = (_: unknown, info: { offset: { x: number } }) => {
     if (info.offset.x > 100) onLike();
     else if (info.offset.x < -100) onPass();
+  };
+
+  const handleTap = () => {
+    if (!didDrag.current && isFront) onViewProfile();
   };
 
   const avatar = profile.avatar_url ?? getAvatarUrl(profile.name, profile.user_id);
@@ -41,8 +58,10 @@ export function SwipeCard({ profile, onLike, onPass, isFront, stackIndex }: Swip
       }}
       drag={isFront ? "x" : false}
       dragConstraints={{ left: 0, right: 0 }}
-      onDragStart={(_, info) => { dragStart.current.x = info.offset.x; }}
+      onDragStart={handleDragStart}
+      onDrag={handleDrag}
       onDragEnd={handleDragEnd}
+      onTap={handleTap}
       className="absolute inset-0 no-select cursor-grab active:cursor-grabbing"
       whileDrag={{ cursor: "grabbing" }}
     >
